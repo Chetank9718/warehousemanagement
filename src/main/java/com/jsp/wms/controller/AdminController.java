@@ -2,6 +2,7 @@ package com.jsp.wms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,9 +28,9 @@ public class AdminController {
 		return adminService.createSuperAdmin(adminRequest);
 	}
 	
-	
-	@PostMapping("/warehouses/{wareHouseId}/admins")
-	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@RequestBody @Valid AdminRequest adminRequest, @PathVariable int wareHouseId){
-		return adminService.createAdmin(adminRequest , wareHouseId);
+	@PreAuthorize("hasAuthority('CREATE_ADMIN')")
+	@PostMapping("/warehouses/{warehouseId}/admins")
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@RequestBody @Valid AdminRequest adminRequest, @PathVariable int warehouseId){
+		return adminService.createAdmin(adminRequest , warehouseId);
 	}
 }

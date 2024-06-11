@@ -32,7 +32,7 @@ public class AplicationExceptionHandler {
 		return errorResponse(HttpStatus.FOUND, ex.getMessage(), "Super_Admin Already Exists");
 	}
 	
-	
+	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByIdException(WarehouseNotFoundByIdException ex){
 		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "WareHouse Not Found");
 	}
