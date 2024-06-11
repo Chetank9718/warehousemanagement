@@ -1,5 +1,6 @@
 package com.jsp.wms.serviceimpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +118,31 @@ public class AdminServiceImpl implements AdminService{
 							.setData(adminMapper.mapToAdminResponse(admin)));
 		}).orElseThrow(()-> new AdminNotFoundByEmailException("Admin Not Found"));
 		
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(int adminId) {
+		
+		return adminRepository.findById(adminId).map(admin -> {
+			return ResponseEntity.status(HttpStatus.FOUND)
+					.body(new ResponseStructure<AdminResponse>()
+							.setStatus(HttpStatus.FOUND.value())
+							.setMessage("Admin Found")
+							.setData(adminMapper.mapToAdminResponse(admin)));
+		}).orElseThrow(()-> new AdminNotFoundByEmailException("Admin Not Found"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins() {
+		
+		List<AdminResponse> admins = adminRepository.findAll().stream().map(admin ->
+		adminMapper.mapToAdminResponse(admin)).toList();
+		
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<AdminResponse>>()
+						.setStatus(HttpStatus.FOUND.value())
+						.setMessage("Admins Found")
+						.setData(admins));
 	}
 
 

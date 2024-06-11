@@ -64,4 +64,16 @@ public class WarehouseServiceImpl implements WarehouseService{
 		}).orElseThrow(()-> new WarehouseNotFoundByIdException("Warehouse Not Found"));
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(int warehouseId) {
+		
+		return warehouseRepository.findById(warehouseId).map(warehouse ->{
+		return ResponseEntity.status(HttpStatus.FOUND)
+		.body(new ResponseStructure<WarehouseResponse>()
+				.setStatus(HttpStatus.FOUND.value())
+				.setMessage("Warehouse Found")
+				.setData(warehouseMapper.mapToWarehouseResponse(warehouse)));
+		}).orElseThrow(()-> new WarehouseNotFoundByIdException("Warehouse Not Found"));
+	}
+
 }
