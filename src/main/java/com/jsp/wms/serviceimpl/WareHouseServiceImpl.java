@@ -14,6 +14,7 @@ import com.jsp.wms.entity.Admin;
 import com.jsp.wms.entity.Warehouse;
 import com.jsp.wms.enums.AdminType;
 import com.jsp.wms.exception.IllegalOperationException;
+import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.WarehouseMapper;
 import com.jsp.wms.repository.AdminRepository;
 import com.jsp.wms.repository.WarehouseRepository;
@@ -35,7 +36,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(WarehouseRequest warehouseRequest) {
 
 		Warehouse warehouse = warehouseRepository.save(warehouseMapper.mapToWarehouse(warehouseRequest, new Warehouse()));
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<WarehouseResponse>()
 						.setStatus(HttpStatus.CREATED.value())
@@ -43,6 +44,24 @@ public class WarehouseServiceImpl implements WarehouseService{
 						.setData(warehouseMapper.mapToWarehouseResponse(warehouse)));
 
 
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> updateWarehouse(WarehouseRequest warehouseRequest,
+			int warehouseId) {
+
+		return	warehouseRepository.findById(warehouseId).map(exWarehouse -> {
+
+			exWarehouse = warehouseMapper.mapToWarehouse(warehouseRequest, exWarehouse);
+
+			Warehouse warehouse = warehouseRepository.save(exWarehouse);
+
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseStructure<WarehouseResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Warehouse Updated")
+							.setData(warehouseMapper.mapToWarehouseResponse(warehouse)));
+		}).orElseThrow(()-> new WarehouseNotFoundByIdException("Warehouse Not Found"));
 	}
 
 }
