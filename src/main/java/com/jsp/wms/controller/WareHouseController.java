@@ -2,28 +2,31 @@ package com.jsp.wms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jsp.wms.entity.WareHouse;
-import com.jsp.wms.requestdto.WareHouseRequest;
-import com.jsp.wms.service.WareHouseService;
+import com.jsp.wms.entity.Warehouse;
+import com.jsp.wms.requestdto.WarehouseRequest;
+import com.jsp.wms.responsedto.WarehouseResponse;
+import com.jsp.wms.service.WarehouseService;
 import com.jsp.wms.utility.ResponseStructure;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
-public class WareHouseController {
+public class WarehouseController {
 	
-//	@Autowired
-//	private WareHouseService wareHouseService;
+	@Autowired
+	private WarehouseService warehouseService;
 
-	@GetMapping("/warehouses")
-	public String createWareHouse(){
-		return "WareHouse found";
+	@PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
+	@PostMapping("/warehouses")
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(@RequestBody WarehouseRequest warehouseRequest){
+		return warehouseService.createWarehouse(warehouseRequest);
 	}
 }

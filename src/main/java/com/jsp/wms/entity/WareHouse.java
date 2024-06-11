@@ -16,12 +16,12 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class WareHouse {
+
+public class Warehouse {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int wareHouseId;
+	private int warehouseId;
 	private String name;
 	
 	@OneToOne
