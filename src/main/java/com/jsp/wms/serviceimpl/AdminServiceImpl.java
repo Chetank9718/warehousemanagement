@@ -100,5 +100,24 @@ public class AdminServiceImpl implements AdminService{
 		}).orElseThrow(()-> new AdminNotFoundByEmailException("Admin Not Found"));
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminBySuperAdmin(@Valid AdminRequest adminRequest,
+			int adminId) {
+		
+		return adminRepository.findById(adminId).map(exAdmin -> {
+			
+			exAdmin = adminMapper.mapToAdmin(adminRequest, exAdmin);
+			
+					Admin admin = adminRepository.save(exAdmin);
+			
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseStructure<AdminResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Admin Updated")
+							.setData(adminMapper.mapToAdminResponse(admin)));
+		}).orElseThrow(()-> new AdminNotFoundByEmailException("Admin Not Found"));
+		
+	}
+
 
 }
