@@ -11,5 +11,8 @@ import jakarta.validation.Valid;
 
 public interface AdminService {
 
-	public ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(AdminRequest adminRequest); 
+	public ResponseEntity<ResponseStructure<AdminResponse>> createSuperAdmin(AdminRequest adminRequest);
+
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@Valid AdminRequest adminRequest,
+			int wareHouseId); 
 }

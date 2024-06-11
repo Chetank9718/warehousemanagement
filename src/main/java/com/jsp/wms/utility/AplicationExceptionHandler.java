@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.jsp.wms.exception.IllegalOperationException;
+import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 
 @RestControllerAdvice
 public class AplicationExceptionHandler {
@@ -29,6 +30,11 @@ public class AplicationExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<String>> handleIllegalOperationException(IllegalOperationException ex){
 		return errorResponse(HttpStatus.FOUND, ex.getMessage(), "Super_Admin Already Exists");
+	}
+	
+	
+	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByIdException(WarehouseNotFoundByIdException ex){
+		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "WareHouse Not Found");
 	}
 	
 
