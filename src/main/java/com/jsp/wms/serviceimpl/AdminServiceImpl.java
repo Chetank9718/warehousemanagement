@@ -135,8 +135,8 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins() {
 		
-		List<AdminResponse> admins = adminRepository.findAll().stream().map(admin ->
-		adminMapper.mapToAdminResponse(admin)).toList();
+	List<AdminResponse> admins = adminRepository.findAllByAdminType(AdminType.ADMIN).stream()
+	.map(adminMapper :: mapToAdminResponse).toList();
 		
 		return ResponseEntity.status(HttpStatus.FOUND)
 				.body(new ResponseStructure<List<AdminResponse>>()
