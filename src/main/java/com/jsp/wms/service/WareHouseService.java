@@ -1,5 +1,7 @@
 package com.jsp.wms.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.wms.entity.Warehouse;
@@ -15,5 +17,11 @@ public interface WarehouseService {
 			int warehouseId);
 
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(int warehouseId);
+
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehouses();
+
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehousesByCity(String city);
+
+	
 
 }

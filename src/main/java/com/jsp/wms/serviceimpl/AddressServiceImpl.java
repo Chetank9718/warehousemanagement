@@ -37,6 +37,8 @@ public class AddressServiceImpl implements AddressService{
 			Address address = addressMapper.mapToAddress(addressRequest, new Address());
 
 			address.setWarehouse(warehouse);
+			
+			warehouseRepository.save(warehouse);
 
 			address = addressRepository.save(address);
 
@@ -56,7 +58,7 @@ public class AddressServiceImpl implements AddressService{
 
 			Address address = addressMapper.mapToAddress(addressRequest, exAddress);
 
-			addressRepository.save(address);
+			address = addressRepository.save(address);
 
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponseStructure<AddressResponse>()
@@ -69,13 +71,13 @@ public class AddressServiceImpl implements AddressService{
 
 	@Override
 	public ResponseEntity<ResponseStructure<AddressResponse>> findAddress(int addressId) {
-		
+
 		return addressRepository.findById(addressId).map(address -> {
-		return ResponseEntity.status(HttpStatus.FOUND)
-				.body(new ResponseStructure<AddressResponse>()
-						.setStatus(HttpStatus.FOUND.value())
-						.setMessage("Address Found")
-						.setData(addressMapper.mapToAddress(address)));
+			return ResponseEntity.status(HttpStatus.FOUND)
+					.body(new ResponseStructure<AddressResponse>()
+							.setStatus(HttpStatus.FOUND.value())
+							.setMessage("Address Found")
+							.setData(addressMapper.mapToAddress(address)));
 		}).orElseThrow(()-> new AddressNotFoundByIdException("Address Not Found"));
 	}
 
