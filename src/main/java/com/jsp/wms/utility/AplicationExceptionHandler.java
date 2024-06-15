@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.jsp.wms.exception.AddressNotFoundByIdException;
 import com.jsp.wms.exception.AdminNotFoundByEmailException;
 import com.jsp.wms.exception.IllegalOperationException;
+import com.jsp.wms.exception.WarehouseNotFoundByCityException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 
 @RestControllerAdvice
@@ -49,12 +50,16 @@ public class AplicationExceptionHandler {
 		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "Address Not Found");
 	}
 	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByCityException(WarehouseNotFoundByCityException ex){
+		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "Warehouse Not Found By City");
+	}
+	
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
 		List<ObjectError> errors = ex.getAllErrors();
-		
-		
+			
 		Map<String, String> allErrors = new HashMap<>();
 		
 		errors.forEach(error ->{

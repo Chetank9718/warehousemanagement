@@ -1,5 +1,7 @@
 package com.jsp.wms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,5 +44,17 @@ public class WarehouseController {
 	@GetMapping("/warehouses/{warehouseId}")
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(@PathVariable int warehouseId){
 		return warehouseService.findWarehouse(warehouseId);
+	}
+	
+	@PreAuthorize("hasAuthority('READ')")
+	@GetMapping("/warehouses")
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehouses(){
+		return warehouseService.findWarehouses();
+	}
+	
+	@PreAuthorize("hasAuthority('READ')")
+	@GetMapping("/cities/{city}/warehouses")
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehousesByCity(@PathVariable String city){
+		return warehouseService.findWarehousesByCity(city);
 	}
 }

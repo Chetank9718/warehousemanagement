@@ -1,21 +1,23 @@
 package com.jsp.wms.responsedto;
 
+import com.jsp.wms.enums.AdminType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseResponse {
+public class ClientResponse {
 
-	private int warehouseId;
-	private String name;
-	private double totalCapacity;
+	private int clientId;
+	private String businessName;
+	private String email;
+	private long contactNumber;
 	
-	private AddressResponse addressResponse;
 }
