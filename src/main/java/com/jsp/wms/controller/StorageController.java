@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jsp.wms.entity.Storage;
 import com.jsp.wms.repository.StorageRepository;
 import com.jsp.wms.requestdto.StorageRequest;
+import com.jsp.wms.requestdto.StorageTypeRequest;
 import com.jsp.wms.responsedto.StorageResponse;
 import com.jsp.wms.service.StorageService;
 import com.jsp.wms.utility.ResponseStructure;
@@ -33,8 +34,8 @@ public class StorageController {
 	@PreAuthorize("hasAuthority('CREATE_STORAGE')")
 	@PostMapping("/warehouses/{wareHouseId}/storages")
 	public ResponseEntity<SimpleStructure<String>> createStorage(@RequestBody  StorageRequest storageRequest ,
-			@PathVariable int wareHouseId, @RequestParam("no_of_storage_units") int noOfStorageUnits ){
-		return storageService.createStorage(storageRequest , wareHouseId , noOfStorageUnits);
+			@PathVariable int wareHouseId, @RequestParam("no_of_storage_units") int noOfStorageUnits , int storageTypeId ){
+		return storageService.createStorage(storageRequest , wareHouseId , noOfStorageUnits , storageTypeId);
 	}
 	
 	
@@ -45,10 +46,10 @@ public class StorageController {
 		return storageService.updateStorage(storageId, storageRequest);
 	}
 	
-	@GetMapping("/findfirststorage")
-	public Storage findFirstStorage() {
-		return storageRepository.findFirstByCapacityInKgAndLengthInMetersAndBreadthInMetersAndHeightInMeters(150, 10, 7.5, 8.5).orElseThrow(() -> new RuntimeException("Not Found"));
-	}
+//	@GetMapping("/findfirststorage")
+//	public Storage findFirstStorage() {
+//		return storageRepository.findFirstByCapacityInWeightAndLengthInMetersAndBreadthInMetersAndHeightInMeters(150, 10, 7.5, 8.5).orElseThrow(() -> new RuntimeException("Not Found"));
+//	}
 	
 	
 }

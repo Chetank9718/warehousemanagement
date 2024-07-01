@@ -7,5 +7,7 @@ public enum MaterialTypes {
 	FOOD,
 	CLOTHES,
 	MOBILES,
-	LAPTOP
+	LAPTOP,
+	SHOES,
+	
 }

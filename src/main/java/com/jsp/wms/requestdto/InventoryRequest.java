@@ -1,4 +1,4 @@
-package com.jsp.wms.responsedto;
+package com.jsp.wms.requestdto;
 
 import java.util.List;
 
@@ -15,12 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StorageResponse {
+public class InventoryRequest {
 
-	private int storageId;
-	private String blockName;
-	private String section;
+	private String productTitle;
+	private double lengthInMeters;
+	private double breadthInMeters;
+	private double heightInMeters;
+	private double weightInKg;
+	
+
 	List<MaterialTypes> materialTypes;
-	private double maxAdditionalWeight;
-	private double availableArea;
+	private int sellerId;
 }

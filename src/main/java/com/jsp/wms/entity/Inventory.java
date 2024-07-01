@@ -1,13 +1,11 @@
 package com.jsp.wms.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsp.wms.enums.MaterialTypes;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,35 +18,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Storage {
+public class Inventory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int storageId;
-	
-	private String blockName;
-	private String section;
-	
-	@Enumerated(EnumType.STRING)
-	private List<MaterialTypes> materialTypes;
-	
-	private double maxAdditionalWeight;
-	private double availableArea;
+	private int productId;
+	private String productTitle;
+	private double lengthInMeters;
+	private double breadthInMeters;
+	private double heightInMeters;
+	private double weightInKg;
+
+	List<MaterialTypes> materialTypes;
+
+	private LocalDate restockedAt;
 	private int sellerId;
 
+
 	@ManyToOne
-	//@JsonIgnore
-	private Warehouse wareHouse;
+	private Client client;
+
+	@ManyToMany(mappedBy = "inventories")
+	private List<PurchaseOrder> purchaseOrders;
 	
-	@ManyToOne
-	private StorageType storageType;
-	
-	@OneToMany(mappedBy = "storage")
+	@OneToMany(mappedBy = "inventory")
 	private List<Batch> batchs;
-	
-	
 }
