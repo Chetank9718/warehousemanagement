@@ -6,28 +6,27 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class Client {
+@AllArgsConstructor
+public class PurchaseOrder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int clientId;
-	private String businessName;
-	private String email;
-	private long contactNumber;
-		
-	private String apiKey;
+	private int orderId;
+	private int orderQuantity;
+	private String invoiceLink;
+	private String status;
+	private int customerId;
 	
-	@OneToMany(mappedBy = "client")
-	private List<Inventory> inventory;
+	@ManyToMany
+	private List<Inventory> inventories;
 }

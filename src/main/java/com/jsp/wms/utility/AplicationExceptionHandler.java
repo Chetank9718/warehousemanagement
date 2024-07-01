@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.jsp.wms.exception.AddressNotFoundByIdException;
 import com.jsp.wms.exception.AdminNotFoundByEmailException;
 import com.jsp.wms.exception.IllegalOperationException;
+import com.jsp.wms.exception.InventoryNotFoundByIdException;
+import com.jsp.wms.exception.PurchaseOrderNotFoundByIdException;
+import com.jsp.wms.exception.StorageTypeNotFoundByIdException;
 import com.jsp.wms.exception.WarehouseNotFoundByCityException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 
@@ -53,6 +56,20 @@ public class AplicationExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByCityException(WarehouseNotFoundByCityException ex){
 		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "Warehouse Not Found By City");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleStorageTypeNotFoundByIdException(StorageTypeNotFoundByIdException ex){
+		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "StorageType Not Found");
+	}
+	
+	
+	public ResponseEntity<ErrorStructure<String>> handleInventoryNotFoundByIdException(InventoryNotFoundByIdException ex){
+		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "Inventory Not Found By Id");
+	}
+	
+	public ResponseEntity<ErrorStructure<String>> handlePurchaseOrderNotFoundByIdException(PurchaseOrderNotFoundByIdException ex){
+		return errorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "PurchaseOrder Not Found By Id");
 	}
 	
 

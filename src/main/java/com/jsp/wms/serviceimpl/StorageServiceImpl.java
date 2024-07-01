@@ -9,13 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.wms.entity.Storage;
+import com.jsp.wms.entity.StorageType;
 import com.jsp.wms.entity.Warehouse;
 import com.jsp.wms.exception.StorageNotFoundByIdException;
+import com.jsp.wms.exception.StorageTypeNotFoundByIdException;
 import com.jsp.wms.exception.WarehouseNotFoundByIdException;
 import com.jsp.wms.mapper.StorageMapper;
 import com.jsp.wms.repository.StorageRepository;
+import com.jsp.wms.repository.StorageTypeRepository;
 import com.jsp.wms.repository.WarehouseRepository;
 import com.jsp.wms.requestdto.StorageRequest;
+import com.jsp.wms.requestdto.StorageTypeRequest;
 import com.jsp.wms.responsedto.StorageResponse;
 import com.jsp.wms.service.StorageService;
 import com.jsp.wms.utility.ResponseStructure;
@@ -32,42 +36,49 @@ public class StorageServiceImpl implements StorageService{
 
 	@Autowired
 	private StorageMapper storageMapper;
+	
+	@Autowired
+	private StorageTypeRepository storageTypeRepository;
+
 
 	@Override
 	public ResponseEntity<SimpleStructure<String>> createStorage(StorageRequest storageRequest, int wareHouseId,
-			int noOfStorageUnits) {
+			int noOfStorageUnits , int storageTypeId) {
 
-	Warehouse wareHouse =  wareHouseRespository.findById(wareHouseId).orElseThrow(()-> new WarehouseNotFoundByIdException("Warehouse Not Found"));
-
-	List<Storage> storages = new ArrayList<Storage>();
-
-	int count = 0;
-
-	while(noOfStorageUnits > 0) {
-
-		Storage storage  = storageMapper.mapToStorage(storageRequest, new Storage());
+		Warehouse wareHouse =  wareHouseRespository.findById(wareHouseId).orElseThrow(()-> new WarehouseNotFoundByIdException("Warehouse Not Found"));
+		
+		StorageType storageType = storageTypeRepository.findById(storageTypeId).orElseThrow(()->new StorageTypeNotFoundByIdException("No storage found"));
 
 
+		List<Storage> storages = new ArrayList<Storage>();
 
-		storage.setMaxAdditionalWeight(storageRequest.getCapacityInKg());
-		storage.setAvailableArea(storageRequest.getLengthInMeters() * storageRequest.getBreadthInMeters() * storageRequest.getHeightInMeters());
-		storage.setWareHouse(wareHouse);
+		int count = 0;
 
-		wareHouse.setTotalCapacityInKg(storage.getCapacityInKg() * noOfStorageUnits + wareHouse.getTotalCapacityInKg());
+		while(noOfStorageUnits > 0) {
 
-		storages.add(storage);
-		count++;
-		noOfStorageUnits --;
-	}
+			Storage storage  = storageMapper.mapToStorage(storageRequest, new Storage());
 
-	storageRepository.saveAll(storages);
-	//wareHouseRespository.save(wareHouse);
+			storage.setWareHouse(wareHouse);
+			storage.setStorageType(storageType);
+			storageType.setUnitsAvailable(storageType.getUnitsAvailable()+noOfStorageUnits);
+			storage.setMaxAdditionalWeight(storageType.getCapacityInWeight());
 
-	
-	
-	return ResponseEntity.status(HttpStatus.CREATED).body(new SimpleStructure<String>()
-			.setStatus(HttpStatus.CREATED.value())
-			.setMesssage(""+count + " Storages created"));
+			//wareHouse.setTotalCapacityInKg(storageType.getCapacityInWeight() * noOfStorageUnits + wareHouse.getTotalCapacityInKg());
+
+			storages.add(storage);
+			count++;
+			noOfStorageUnits --;
+		}
+
+		storageRepository.saveAll(storages);
+		//wareHouseRespository.save(wareHouse);
+		storageTypeRepository.save(storageType);
+
+
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(new SimpleStructure<String>()
+				.setStatus(HttpStatus.CREATED.value())
+				.setMesssage(""+count + " Storages created"));
 
 	}
 
@@ -89,7 +100,7 @@ public class StorageServiceImpl implements StorageService{
 		}).orElseThrow(()-> new StorageNotFoundByIdException("Storage Not Found"));
 	}
 
-	
+
 }
 
 

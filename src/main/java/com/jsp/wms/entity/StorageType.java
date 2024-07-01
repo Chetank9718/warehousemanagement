@@ -1,33 +1,29 @@
 package com.jsp.wms.entity;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class StorageType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int clientId;
-	private String businessName;
-	private String email;
-	private long contactNumber;
-		
-	private String apiKey;
+	private int storageTypeId;
+	private double lengthInMeters;
+	private double breadthInMeters;
+	private double heightInMeters;
+	private double capacityInWeight;
+	private int unitsAvailable;
 	
-	@OneToMany(mappedBy = "client")
-	private List<Inventory> inventory;
+	
 }
